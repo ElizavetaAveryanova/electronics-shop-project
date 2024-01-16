@@ -7,6 +7,13 @@ from src.item import Item
 def item_fixture():
     return Item("Смартфон", 10000, 20)
 
+def test___repr__(item_fixture):
+    assert repr(item_fixture) == "Item('Смартфон', 10000, 20)"
+
+
+def test___str__(item_fixture):
+    assert str(item_fixture) == 'Смартфон'
+
 def test_calculate_total_price(item_fixture):
     assert item_fixture.calculate_total_price() == 200000
 

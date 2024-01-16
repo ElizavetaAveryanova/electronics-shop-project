@@ -14,12 +14,23 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.__name = None
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
 
-        self.all.append(self)
+        Item.all.append(self)
+
+    def __repr__(self) -> str:
+        """
+        Возвращает информацию об объекте: название класса(атрибуты экземпляра)
+        """
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
+    def __str__(self) -> str:
+        """
+        Возвращает информацию об объекте: название товара
+        """
+        return self.__name
 
     @property
     def name(self) -> str:
