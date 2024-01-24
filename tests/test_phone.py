@@ -23,3 +23,5 @@ def test_number_of_sim(phone_fixture1, phone_fixture2):
     assert phone_fixture1.number_of_sim == 2
     with pytest.raises(Exception):
         phone_fixture2.number_of_sim = 0
+        assert type(phone_fixture2.number_of_sim) is not int
+
