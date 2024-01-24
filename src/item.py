@@ -68,6 +68,9 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls, csvfile):
+        """
+        Инициализирует экземпляры класса Item данными из файла src/items.csv
+        """
         cls.all.clear()
 
         with open(csvfile, newline='', encoding="windows-1251") as csvfile:
@@ -81,3 +84,12 @@ class Item:
         Возвращает число из числа-строки
         """
         return int(float(str_number))
+
+    def __add__(self, other):
+        """
+        Сложение экземпляров класса Phone и Item (сложение по количеству товара в магазине)
+        """
+        if isinstance(other, self.__class__):
+            return self.quantity + other.quantity
+        raise Exception('Недопустимо сложение Phone или Item с экземплярами не Phone или Item классов')
+
