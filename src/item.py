@@ -89,7 +89,11 @@ class Item:
         """
         Сложение экземпляров класса Phone и Item (сложение по количеству товара в магазине)
         """
-        if isinstance(other, self.__class__):
+        if isinstance(other, Item):
             return self.quantity + other.quantity
         raise Exception('Недопустимо сложение Phone или Item с экземплярами не Phone или Item классов')
 
+    def __radd__(self, other):
+        if isinstance(other, Item):
+            return other.quantity + self.quantity
+        raise Exception('Недопустимо сложение Phone или Item с экземплярами не Phone или Item классов')
