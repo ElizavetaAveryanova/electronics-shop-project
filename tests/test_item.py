@@ -1,13 +1,31 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import pytest
-from config import DICT_DIR
-from src.item import Item
+from config import DICT_DIR, DICT_DIR_NO_EXIST, DICT_DIR_BROKEN_1, DICT_DIR_BROKEN_2
+from src.item import Item, InstantiateCSVError
 from src.phone import Phone
+
 
 @pytest.fixture
 def item_fixture():
     """Создаем экземпляр класса в фикстуре"""
     return Item("Смартфон", 10000, 20)
+
+def test_instantiate_from_csv():
+    Item.instantiate_from_csv()
+    assert len(Item.all) == 5
+
+def test_instantiate_from_csv_not_file():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv(DICT_DIR_NO_EXIST)
+
+def test_instantiate_from_csv_broken_file():
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv(DICT_DIR_BROKEN_1)
+
+def test_instantiate_from_csv_broken_file_2():
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv(DICT_DIR_BROKEN_2)
+
 
 def test___repr__(item_fixture):
     assert repr(item_fixture) == "Item('Смартфон', 10000, 20)"

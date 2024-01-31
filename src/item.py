@@ -1,4 +1,7 @@
 import csv
+import os
+from config import DICT_DIR
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -67,16 +70,26 @@ class Item:
         return None
 
     @classmethod
-    def instantiate_from_csv(cls, csvfile):
+    def instantiate_from_csv(cls, path=DICT_DIR) -> None:
         """
         Инициализирует экземпляры класса Item данными из файла src/items.csv
         """
-        cls.all.clear()
 
-        with open(csvfile, newline='', encoding="windows-1251") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                cls(row['name'], float(row['price']), int(row['quantity']))
+        if not os.path.isfile(path):
+            raise FileNotFoundError("Отсутствует файл items.csv")
+        else:
+            with open(path, encoding="windows-1251") as csvfile:
+                reader = csv.DictReader(csvfile, delimiter=',')
+                for row in reader:
+                    if row['price'] is None or row['price'] == '':
+                        raise InstantiateCSVError("Файл items.csv поврежден")
+                    elif row['quantity'] is None or row['quantity'] == '':
+                        raise InstantiateCSVError("Файл items.csv поврежден")
+                    else:
+                        name = str(row['name'])
+                        price = float(row['price'])
+                        quantity = int(row['quantity'])
+                        cls(name, price, quantity)
 
     @staticmethod
     def string_to_number(str_number: str) -> int:
@@ -97,3 +110,7 @@ class Item:
         if isinstance(other, Item):
             return other.quantity + self.quantity
         raise Exception('Недопустимо сложение Phone или Item с экземплярами не Phone или Item классов')
+
+class InstantiateCSVError(Exception):
+    """Класс исключения при поврежденном файле"""
+    pass
