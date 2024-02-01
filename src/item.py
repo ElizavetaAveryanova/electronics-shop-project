@@ -75,6 +75,7 @@ class Item:
         """
         Инициализирует экземпляры класса Item данными из файла src/items.csv
         """
+        cls.all.clear()
         try:
             with open(path, encoding="windows-1251") as csvfile:
                 reader = csv.DictReader(csvfile, delimiter=',')
