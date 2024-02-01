@@ -75,26 +75,20 @@ class Item:
         """
         Инициализирует экземпляры класса Item данными из файла src/items.csv
         """
-        if not os.path.isfile(path):
-            raise FileNotFoundError("Отсутствует файл items.csv")
-        else:
+        try:
             with open(path, encoding="windows-1251") as csvfile:
                 reader = csv.DictReader(csvfile, delimiter=',')
                 for row in reader:
-                    try:
-                        if row['price'] is None or row['price'] == '':
-                            raise InstantiateCSVError("Файл items.csv поврежден")
-                        elif row['quantity'] is None or row['quantity'] == '':
-                            raise InstantiateCSVError("Файл items.csv поврежден")
-                        else:
-                            name = str(row['name'])
-                            price = float(row['price'])
-                            quantity = int(row['quantity'])
-                            cls(name, price, quantity)
-                    except (InstantiateCSVError, ValueError) as ex:
-                        # Обработка ошибки в случае, если файл поврежден или значения некорректные
-                        print(f"Ошибка при инициализации экземпляра: {ex}")
-                        continue
+                    name = str(row['name'])
+                    price = float(row['price'])
+                    quantity = int(row['quantity'])
+                    if row['price'] or row['quantity'] or row['name'] is None:
+                        raise InstantiateCSVError("Файл items.csv поврежден")
+                    item = cls(name, price, quantity)
+                    print(item)
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл item.csv")
+
 
     @staticmethod
     def string_to_number(str_number: str) -> int:
