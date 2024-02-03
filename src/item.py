@@ -79,16 +79,17 @@ class Item:
         try:
             with open(path, encoding="windows-1251") as csvfile:
                 reader = csv.DictReader(csvfile, delimiter=',')
-                for row in reader:
-                    name = str(row['name'])
-                    price = float(row['price'])
-                    quantity = int(row['quantity'])
-                    if row['price'] or row['quantity'] or row['name'] is None:
-                        raise InstantiateCSVError("Файл items.csv поврежден")
-                    item = cls(name, price, quantity)
-                    print(item)
         except FileNotFoundError:
-            raise FileNotFoundError("Отсутствует файл item.csv")
+            raise FileNotFoundError("Отсутствует файл items.csv")
+        try:
+            for row in reader:
+                name = str(row['name'])
+                price = float(row['price'])
+                quantity = int(row['quantity'])
+                item = cls(name, price, quantity)
+                print(item)
+        except:
+            raise InstantiateCSVError("Файл items.csv поврежден")
 
 
     @staticmethod
